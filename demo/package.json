@@ -1,0 +1,17 @@
+{
+  "name": "demo",
+  "version": "1.0.0",
+  "description": "babel demo",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/generator": "^7.20.0",
+    "@babel/parser": "^7.20.0",
+    "@babel/traverse": "^7.20.0",
+    "@babel/types": "^7.20.0"
+  }
+}

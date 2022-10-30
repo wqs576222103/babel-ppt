@@ -1,0 +1,872 @@
+import {
+  CodeSurfer,
+  CodeSurferColumns,
+  Step,
+} from "code-surfer";
+import { github, vsDark } from "@code-surfer/themes";
+
+import "prismjs/components/prism-json5";
+
+export const theme = vsDark;
+
+# AST&Babel
+
+---
+
+### 应用场景
+
+1.  V8 引擎第一步就通过代码解析器将代码转化为 AST
+2.  日常开发中使用的框架，脚手架，打包工具，再到编辑器的代码补全，代码格式化等功能
+
+---
+
+## AST（bstract syntax tree）抽象语法树
+
+- AST 实质是一个对象，对象里面包含多个不同类型的节点，每一个节点都包含 type 属性，用于表示节点类型，除此之外，Babel 还为每个节点额外生成了一些属性，用于描述该节点在原始代码中的位置，比如： start、end、loc。
+
+- AST 的节点类型主要分为以下几个大类：字面量(Literal)、标志符(Identifier)、语句(Statement)、声明(Declaration)、表达式(Expression)、注释(Comment) 等等
+
+---
+
+<CodeSurferColumns themes={[vsDark, github]} sizes={[1,3]}>
+
+<Step>
+
+```js 2[11:12] file=./src/ast/literal/index.js
+
+```
+
+```json5 90[17:42] showNumbers file=./src/ast/literal/index.json title="type为Literal字面量"
+
+```
+
+</Step>
+
+<Step>
+
+```js 3[11:14] file=./src/ast/literal/index.js
+
+```
+
+```json5 188[16:41] showNumbers file=./src/ast/literal/index.json title="type为Literal字面量"
+
+```
+
+</Step>
+
+<Step>
+
+```js 4[12:18] file=./src/ast/literal/index.js
+
+```
+
+```json5 266[17:43] showNumbers file=./src/ast/literal/index.json title="type为Literal字面量"
+
+```
+
+</Step>
+
+<Step>
+
+```js 5[14:18] file=./src/ast/literal/index.js
+
+```
+
+```json5 406[17:41] showNumbers file=./src/ast/literal/index.json title="type为Literal字面量"
+
+```
+
+</Step>
+
+<Step>
+
+```js 6[14:18] file=./src/ast/literal/index.js
+
+```
+
+```json5 484[17:44] showNumbers file=./src/ast/literal/index.json title="type为Literal字面量"
+
+```
+
+</Step>
+
+<Step>
+
+```js 7[20:25] file=./src/ast/literal/index.js
+
+```
+
+```json5 594[21:45] showNumbers file=./src/ast/literal/index.json title="type为Literal字面量"
+
+```
+
+</Step>
+
+<Step>
+
+```js 8[15:19] file=./src/ast/literal/index.js
+
+```
+
+```json5 674[17:39] showNumbers file=./src/ast/literal/index.json title="type为Literal字面量"
+
+```
+
+</Step>
+
+<Step>
+
+```js 10[16:19] file=./src/ast/literal/index.js
+
+```
+
+```json5 822[17:41] showNumbers file=./src/ast/literal/index.json title="type为Literal字面量" subtitle="一些字面量 如数值、字符串、字符串模版、布尔、null是、undefined不是。 Literal细化类型有StringLiteral、TemplateLiteral、NumericLiteral、RegExpLiteral、BooleanLiteral、BigintLiteral、NullLiteral"
+
+```
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+<CodeSurferColumns themes={[vsDark, github]} sizes={[1,3]}>
+
+<Step>
+
+```js 2[7:8],3[7:10],4[3:4],6[7:8],7[10:12,14:19],8[16:19] file=./src/ast/identifier/index.js
+
+```
+
+```json5 71[15:38] showNumbers file=./src/ast/identifier/index.json title="type为Identifier标志符" subtitle="程序中所有的 变量名、函数名、对象键（key） 以及函数中的参数名，都属于标志符（Identifier）"
+
+```
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+<CodeSurferColumns themes={[vsDark, github]} sizes={[1,3]}>
+
+<Step>
+
+```js 2[17:18],3:24,25[23,24],26 file=./src/ast/statement/index.js
+
+```
+
+```json5 96[13:38] showNumbers file=./src/ast/statement/index.json title="type为Statement语句" subtitle="能够独立执行的基本单位"
+
+```
+
+</Step>
+
+<Step>
+
+```js 4:22 file=./src/ast/statement/index.js
+
+```
+
+```json5 191[17:40] showNumbers file=./src/ast/statement/index.json title="type为Statement语句"
+
+```
+
+</Step>
+
+<Step>
+
+```js 5:7 file=./src/ast/statement/index.js
+
+```
+
+```json5 224[23:48] showNumbers file=./src/ast/statement/index.json title="type为Statement语句"
+
+```
+
+</Step>
+
+<Step>
+
+```js 6,10 file=./src/ast/statement/index.js
+
+```
+
+```json5 313[29:59] showNumbers file=./src/ast/statement/index.json title="type为Statement语句"
+
+```
+
+</Step>
+
+<Step>
+
+```js 8:14 file=./src/ast/statement/index.js
+
+```
+
+```json5 393[23:46] showNumbers file=./src/ast/statement/index.json title="type为Statement语句"
+
+```
+
+</Step>
+
+<Step>
+
+```js 9:13 file=./src/ast/statement/index.js
+
+```
+
+```json5 601[29:51] showNumbers file=./src/ast/statement/index.json title="type为Statement语句"
+
+```
+
+</Step>
+
+<Step>
+
+```js 12 file=./src/ast/statement/index.js
+
+```
+
+```json5 864 showNumbers file=./src/ast/statement/index.json title="type为Statement语句"
+
+```
+
+</Step>
+
+<Step>
+
+```js 16:20 file=./src/ast/statement/index.js
+
+```
+
+```json5 890 showNumbers file=./src/ast/statement/index.json title="type为Statement语句"
+
+```
+
+</Step>
+
+<Step>
+
+```js 19 file=./src/ast/statement/index.js
+
+```
+
+```json5 983 showNumbers file=./src/ast/statement/index.json title="type为Statement语句"
+
+```
+
+</Step>
+
+<Step>
+
+```js 21,23 file=./src/ast/statement/index.js
+
+```
+
+```json5 1027 showNumbers file=./src/ast/statement/index.json title="type为Statement语句"
+
+```
+
+</Step>
+
+<Step>
+
+```js 25,26 file=./src/ast/statement/index.js
+
+```
+
+```json5 1163 showNumbers file=./src/ast/statement/index.json title="type为Statement语句"
+
+```
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+<CodeSurferColumns themes={[vsDark, github]} sizes={[1,3]}>
+
+<Step>
+
+```js 1 file=./src/ast/declaration/index.js
+
+```
+
+```json5 38 showNumbers file=./src/ast/declaration/index.json title="type为Declaration" subtitle="声明语句是一种特殊的语句，它执行的逻辑是在作用域内声明一个 变量、函数、class、import、export 等"
+
+```
+
+</Step>
+
+<Step>
+
+```js 2,3,6[8:20] file=./src/ast/declaration/index.js
+
+```
+
+```json5 137 showNumbers file=./src/ast/declaration/index.json title="type为Declaration"
+
+```
+
+</Step>
+
+<Step>
+
+```js 4 file=./src/ast/declaration/index.js
+
+```
+
+```json5 311 showNumbers file=./src/ast/declaration/index.json title="type为Declaration"
+
+```
+
+</Step>
+
+<Step>
+
+```js 5 file=./src/ast/declaration/index.js
+
+```
+
+```json5 369 showNumbers file=./src/ast/declaration/index.json title="type为Declaration"
+
+```
+
+</Step>
+
+<Step>
+
+```js 6 file=./src/ast/declaration/index.js
+
+```
+
+```json5 405 showNumbers file=./src/ast/declaration/index.json title="type为Declaration"
+
+```
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+<CodeSurferColumns themes={[vsDark, github]} sizes={[1,3]}>
+
+<Step>
+
+```js 1,10[2:4] file=./src/ast/expression/index.js
+
+```
+
+```json5 38,54 showNumbers file=./src/ast/expression/index.json title="type为Expression" subtitle="表达式执行完以后有返回值，而这个返回值能赋值给一个变量，这是和语句 (statement) 的区别"
+
+```
+
+</Step>
+
+<Step>
+
+```js 2[1:6],9[6:8] file=./src/ast/expression/index.js
+
+```
+
+```json5 156 showNumbers file=./src/ast/expression/index.json title="type为Expression"
+
+```
+
+</Step>
+
+<Step>
+
+```js 3[1:3],10,11 file=./src/ast/expression/index.js
+
+```
+
+```json5 255 showNumbers file=./src/ast/expression/index.json title="type为Expression"
+
+```
+
+</Step>
+
+<Step>
+
+```js 4 file=./src/ast/expression/index.js
+
+```
+
+```json5 353 showNumbers file=./src/ast/expression/index.json title="type为Expression"
+
+```
+
+</Step>
+
+<Step>
+
+```js 5 file=./src/ast/expression/index.js
+
+```
+
+```json5 449 showNumbers file=./src/ast/expression/index.json title="type为Expression"
+
+```
+
+</Step>
+
+<Step>
+
+```js 6 file=./src/ast/expression/index.js
+
+```
+
+```json5 506 showNumbers file=./src/ast/expression/index.json title="type为Expression"
+
+```
+
+</Step>
+
+<Step>
+
+```js 7 file=./src/ast/expression/index.js
+
+```
+
+```json5 567 showNumbers file=./src/ast/expression/index.json title="type为Expression"
+
+```
+
+</Step>
+
+<Step>
+
+```js 7[1:11] file=./src/ast/expression/index.js
+
+```
+
+```json5 583 showNumbers file=./src/ast/expression/index.json title="type为Expression"
+
+```
+
+</Step>
+
+<Step>
+
+```js 5[7:8],6[12:13],8 file=./src/ast/expression/index.js
+
+```
+
+```json5 469  showNumbers file=./src/ast/expression/index.json title="单独的{}是BlockStatement"
+
+```
+
+</Step>
+
+<Step>
+
+```js 9[9:12],11[2:5] file=./src/ast/expression/index.js
+
+```
+
+```json5 776 showNumbers file=./src/ast/expression/index.json title="单独的{}是BlockStatement"
+
+```
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+<CodeSurferColumns themes={[vsDark, github]} sizes={[1,3]}>
+
+<Step>
+
+```js showNumbers file=./src/ast/demo.js
+
+```
+
+```json5 2[3:20] showNumbers file=./src/ast/demo.json title="type为Program" subtitle="在最外层，代表整个程序的节点，它包裹了所有具体执行语句的节点"
+
+```
+
+</Step>
+
+<Step>
+
+```js 1 showNumbers file=./src/ast/demo.js
+
+```
+
+```json5 389 showNumbers file=./src/ast/demo.json title="type为CommentBlock" subtitle=""
+
+```
+
+</Step>
+
+<Step>
+
+```js 3 showNumbers file=./src/ast/demo.js
+
+```
+
+```json5 407 showNumbers file=./src/ast/demo.json title="type为CommentBlock" subtitle=""
+
+```
+
+</Step>
+
+</CodeSurferColumns>
+
+---
+
+<div style="font-size: 24px;padding: 0 20px">
+  <h1>Babel(javascript 的编译器)</h1>
+  <p>
+    最开始叫 6to5，顾名思义是 es6 转 es5，但是后来随着 es
+    标准的演进，有了 es7、es8 等， 6to5
+    的名字已经不合适了，所以改名为了 babel。
+  </p>
+  <p>
+    Babel
+    的翻译是巴别塔，又名通天塔；巴别塔是《圣经·旧约·创世记》第
+    11
+    章故事中人们建造的塔。根据篇章记载，当时人类联合起来兴建希望能通往天堂的高塔；为了阻止人类的计划，上帝让人类说不同的语言，使人类相互之间不能沟通，计划因此失败，人类自此各散东西。此事件，为世上出现不同语言和种族提供解释。
+  </p>
+</div>
+
+---
+
+### babel 主要三步走来完成编译的过程. 解析(Parse) → 转换(Transform) → 生成(Generate)
+
+![babel](http://127.0.0.1:8080/babel.webp)
+
+---
+
+### 解析(Parse) @babel/parser
+
+输入为源代码，输出结果为 AST
+
+- 词法分析: 一个字符一个字符地读入源程序，对构成源程序的字符流进行扫描然后根据构词规则识别单词(也称单词符号或符号，如标识符、常数、运算符、定界符等)
+- 语法分析: 在词法分析的基础上，将单词一个个的输入, 转化为 ast 格式
+
+---
+
+### 转换（Transform） @babel/traverse
+
+输入为 AST，输出结果为 AST
+
+- 对输入的 AST 进行深度优先遍历，完成对每个节点的遍历，执行替换、删除、添加操作。并返回修改后的 AST
+
+---
+
+### 生成（Generator） @babel/generator
+
+输入为 AST，输出结果为 code
+
+- 对输入的 AST 进行深度优先遍历，生成代码
+
+---
+
+# Babel 的 APIs
+
+1. @babel/parser
+2. @babel/traverse
+3. @babel/types (用来快速创建一个 ast 节点、判断节点类型)
+4. @babel/generator
+5. @babel/core
+
+---
+
+<CodeSurferColumns themes={[vsDark, github]} sizes={[1,1]}>
+<Step>
+
+```js 1[12,13],2,3[10:12],4[12,13] title="dt值改为100、去除console、add改为sum"
+const dt = 1;
+console.log(dt);
+function add(x, y) {
+  return x + y;
+}
+```
+
+```js 1[12:14],2[10:12],3[12,13]
+const dt = 100;
+function sum(x, y) {
+  return x * y;
+}
+```
+
+</Step>
+</CodeSurferColumns>
+
+---
+
+<CodeSurfer>
+
+```js
+const parser = require("@babel/parser");
+const code = `
+const dt = 1;
+console.log(dt);
+function add(x, y) {
+    return x + y
+}
+`;
+const ast = parser.parse(code, {
+  sourceType: "script", //  "script" | "module"
+  plugins: [], // default []
+});
+```
+
+```js
+const parser = require("@babel/parser");
+const traverse = require("@babel/traverse");
+const code = `
+const dt = 1;
+console.log(dt);
+function add(x, y) {
+    return x + y
+}
+`;
+const ast = parser.parse(code, {
+  sourceType: "script", //  "script" | "module"
+  plugins: [], // default []
+});
+traverse.default(ast, {
+  // 进入节点时调用
+  // 参数 path：表示两个节点之间 连接 的 对象
+  enter(path) {},
+  // 离开节点调用
+  exit(path) {},
+  // child node types
+  VariableDeclaration: function (path) {
+
+  },
+
+  CallExpression: function (path) {
+
+  },
+
+  FunctionDeclaration: {
+    enter(path) {
+
+    },
+    exit(path) {},
+  },
+
+  BinaryExpression: function (path) {
+
+  },
+  // // 会覆盖child node 遍历方式
+  // "FunctionDeclaration|ReturnStatement": function (path) {
+  // },
+});
+```
+
+```js
+const parser = require("@babel/parser");
+const traverse = require("@babel/traverse");
+const code = `
+const dt = 1;
+console.log(dt);
+function add(x, y) {
+    return x + y
+}
+`;
+const ast = parser.parse(code, {
+  sourceType: "script", //  "script" | "module"
+  plugins: [], // default []
+});
+traverse.default(ast, {
+  // 进入节点时调用
+  // 参数 path：表示两个节点之间 连接 的 对象
+  enter(path) {},
+  // 离开节点调用
+  exit(path) {},
+  // child node types
+  VariableDeclaration: function (path) {
+    path.traverse(
+      {
+        NumericLiteral: function (path) {
+          path.node.value = this.value;
+        },
+      },
+      { value: 100 }
+    );
+  },
+
+  CallExpression: function (path) {
+
+  },
+
+  FunctionDeclaration: {
+    enter(path) {
+
+    },
+    exit(path) {},
+  },
+
+  BinaryExpression: function (path) {
+
+  },
+});
+```
+
+```js
+const parser = require("@babel/parser");
+const traverse = require("@babel/traverse");
+const t = require("@babel/types");
+const code = `
+const dt = 1;
+console.log(dt);
+function add(x, y) {
+    return x + y
+}
+`;
+const ast = parser.parse(code, {
+  sourceType: "script", //  "script" | "module"
+  plugins: [], // default []
+});
+traverse.default(ast, {
+  // 进入节点时调用
+  // 参数 path：表示两个节点之间 连接 的 对象
+  enter(path) {},
+  // 离开节点调用
+  exit(path) {},
+  // child node types
+  VariableDeclaration: function (path) {
+    path.traverse(
+      {
+        NumericLiteral: function (path) {
+          path.node.value = this.value;
+        },
+      },
+      { value: 100 }
+    );
+  },
+
+  CallExpression: function (path) {
+    if (
+      t.isIdentifier(path.node.callee.object, {
+        name: "console",
+      })
+    ) {
+      path.remove();
+    }
+  },
+
+  FunctionDeclaration: {
+    enter(path) {
+
+    },
+    exit(path) {},
+  },
+
+  BinaryExpression: function (path) {
+    
+  },
+});
+```
+
+```js
+const parser = require("@babel/parser");
+const traverse = require("@babel/traverse");
+const code = `
+const dt = 1;
+console.log(dt);
+function add(x, y) {
+    return x + y
+}
+`;
+const ast = parser.parse(code, {
+  sourceType: "script", //  "script" | "module"
+  plugins: [], // default []
+});
+traverse.default(ast, {
+  // 进入节点时调用
+  // 参数 path：表示两个节点之间 连接 的 对象
+  enter(path) {},
+  // 离开节点调用
+  exit(path) {},
+  // child node types
+  VariableDeclaration: function (path) {
+    path.traverse(
+      {
+        NumericLiteral: function (path) {
+          path.node.value = this.value;
+        },
+      },
+      { value: 100 }
+    );
+  },
+
+  CallExpression: function (path) {
+    if (
+      t.isIdentifier(path.node.callee.object, {
+        name: "console",
+      })
+    ) {
+      path.remove();
+    }
+  },
+
+  FunctionDeclaration: {
+    enter(path) {
+      if ((path.node.id.name = "add")) {
+        path.node.id.name = "sum";
+      }
+    },
+    exit(path) {},
+  },
+
+  BinaryExpression: function (path) {
+    if (path.node.operator === "+") {
+      path.replaceWith(
+        t.binaryExpression(
+          "*",
+          path.node.left,
+          path.node.right
+        )
+      );
+    }
+  },
+});
+```
+
+```js
+const parser = require("@babel/parser");
+const traverse = require("@babel/traverse");
+const generator = require("@babel/generator");
+const code = `
+const dt = 1;
+console.log(dt);
+function add(x, y) {
+    return x + y
+}
+`;
+const ast = parser.parse(code, {
+  ...
+});
+const _code = generator.default(ast);
+// const dt = 100;
+// function sum(x, y) {
+//   return x * y;
+// }
+```
+
+</CodeSurfer>
+
+---
+
+---
+
+- [ppt 工具：codesurfer](https://github.com/pomber/code-surfer)
+- [codesurfer 支持语言工具：prismjs](https://prismjs.com/)
+- [ast 在线查看：astexplorer](https://astexplorer.net/)
+- [token 在线查看：astexplorer](https://esprima.org/demo/parse.html#)
+- [babel 使用手册](https://github.com/jamiebuilds/babel-handbook)
+- [babel&ast](https://juejin.cn/post/7045496002614132766)
+
+---
+
+# THE END
