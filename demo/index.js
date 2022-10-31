@@ -22,19 +22,25 @@ traverse.default(ast, {
   // 离开节点调用
   exit(path) {},
   // child node types
-  VariableDeclaration: function (path) {
-    path.traverse(
-      {
-        NumericLiteral: function (path) {
-          path.node.value = this.value;
+  VariableDeclarator: function (path) {
+    if (path.node.id.name === "dt") {
+      path.traverse(
+        {
+          NumericLiteral: function (path) {
+            path.node.value = this.value;
+          },
         },
-      },
-      { value: 100 }
-    );
+        { value: 100 }
+      );
+    }
   },
 
   CallExpression: function (path) {
-    if (t.isIdentifier(path.node.callee.object, { name: "console" })) {
+    if (
+      t.isIdentifier(path.node.callee.object, {
+        name: "console",
+      })
+    ) {
       path.remove();
     }
   },
@@ -51,7 +57,11 @@ traverse.default(ast, {
   BinaryExpression: function (path) {
     if (path.node.operator === "+") {
       path.replaceWith(
-        t.binaryExpression("*", path.node.left, path.node.right)
+        t.binaryExpression(
+          "*",
+          path.node.left,
+          path.node.right
+        )
       );
     }
   },
@@ -61,7 +71,7 @@ traverse.default(ast, {
 });
 
 const _code = generator.default(ast).code;
-console.log(_code)
+console.log(_code);
 // const dt = 100;
 // function sum(x, y) {
 //   return x * y;
