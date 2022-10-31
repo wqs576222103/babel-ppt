@@ -16,6 +16,7 @@ const ast = parser.parse(code, {
 });
 
 traverse.default(ast, {
+  // vistitor
   // 进入节点时调用
   // 参数 path：表示两个节点之间 连接 的 对象
   enter(path) {},
